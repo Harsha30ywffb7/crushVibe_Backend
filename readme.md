@@ -31,3 +31,7 @@
 - mongo has default parameters i.e skip and limit , which are helpful for pagination
 - /feed?page=1&limit=10 => .skip(0) .limit(10)
 - /feed?page=2&limit=10 => .skip(10) .limit(10)
+
+# Chat and messages.
+
+- Time stamp issue in chat

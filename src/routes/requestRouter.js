@@ -40,7 +40,6 @@ router.post("/send/:status/:userId", userAuth, async (req, res) => {
     // already connection request from you or from other, then stop request again
 
     if (existingConnection) {
-      // console.log("request already found", existingConnection);
       return res
         .status(404)
         .send({ message: "Connection request already exists" });
@@ -88,8 +87,6 @@ router.post("/review/:status/:requestId", userAuth, async (req, res) => {
     if (!yourRequest) {
       return res.status(404).send({ message: "connection request not found" });
     }
-
-    console.log(yourRequest);
 
     yourRequest.status = status;
 

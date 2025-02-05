@@ -11,7 +11,6 @@ const userAuth = async (req, res, next) => {
       throw new Error("Token not found");
     }
     const decodeCookie = jwt.verify(cookie.token, SECRET_KEY);
-    console.log(decodeCookie);
     const { id } = decodeCookie;
 
     const user = await User.findById(id);

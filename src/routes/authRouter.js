@@ -15,11 +15,12 @@ router.post("/login", async (req, res) => {
       throw new Error("Invalid credentials");
     }
     const isvalidPassword = await bcrypt.compare(password, user.password);
-    //console.log(isvalidPassword);
     if (isvalidPassword) {
       // authenticate token
-      const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "7d" });
-      //console.log(token);
+      const token = jwt.sign({ id: user._id }, SECRET_KEY, {
+        expiresIn: "30d",
+      });
+
       // Add token to the cookie.
       res.cookie("token", token);
       res.status(200).send({ message: "Login successfull", user: user });
@@ -113,7 +114,6 @@ router.delete("/delete", async (req, res) => {
 
 router.patch("/update/:userId", async (req, res) => {
   const userId = req.params.userId;
-  //console.log(userId);
   try {
     const ALLOWED_UPATES = ["age", "gender", "photoUrl", "about", "hobbies"];
     const isUpdateAllowed = Object.keys(req.body).every((update) =>

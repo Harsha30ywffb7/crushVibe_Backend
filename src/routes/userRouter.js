@@ -4,7 +4,7 @@ const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 const router = express.Router();
 
-const USER_SAFE_DATA = "firstName lastName age gender photoUrl hobbies";
+const USER_SAFE_DATA = "firstName lastName age gender photoUrl hobbies about";
 
 router.get("/requests/received", userAuth, async (req, res) => {
   try {
@@ -16,10 +16,9 @@ router.get("/requests/received", userAuth, async (req, res) => {
       status: "interested",
     }).populate("fromUserId", USER_SAFE_DATA);
 
-    // console.log(requestsReceived);
     const data = requestsReceived.map((user) => user.fromUserId);
 
-    res.status(200).send({ yourRequests: data });
+    res.status(200).send({ data: data });
   } catch (error) {
     res.status(400).send({ message: "page not found", error: error });
   }
@@ -73,8 +72,6 @@ router.get("/feed", userAuth, async (req, res) => {
       hideUsersFromFeed.add(req.toUserId.toString());
     });
 
-    console.log(hideUsersFromFeed);
-
     // block all these users from feed.
     const users = await User.find({
       $and: [
@@ -85,7 +82,6 @@ router.get("/feed", userAuth, async (req, res) => {
       .select(USER_SAFE_DATA)
       .skip(skip)
       .limit(limit); // for users based on pagination limit
-    //console.log(users);
 
     res.status(200).send({ data: users });
   } catch (error) {

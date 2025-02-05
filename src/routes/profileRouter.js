@@ -17,14 +17,11 @@ router.get("/view", userAuth, (req, res) => {
 
 router.patch("/edit", userAuth, (req, res) => {
   // allow only editable fields (expect email and password from here)
-  console.log("entering into the api");
   try {
     if (!validateEditData) {
       throw new Error("invalid edit fields");
     }
     const loggedInUser = req.user;
-
-    console.log(req.body);
 
     Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key])); //updates user fields
 
