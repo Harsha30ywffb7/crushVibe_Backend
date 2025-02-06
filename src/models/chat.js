@@ -26,3 +26,17 @@ const chatSchema = new mongoose.Schema({
 const Chat = new mongoose.model("Chat", chatSchema);
 
 module.exports = { Chat };
+
+/*
+participants: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      isOnline: { type: Boolean, default: false }, // Default value set to false
+      lastSeen: { type: Date, default: null }, // Use Date type for last seen
+    },
+  ],
+*/

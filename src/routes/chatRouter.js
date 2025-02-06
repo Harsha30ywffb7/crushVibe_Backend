@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { userAuth } = require("../middlewares/auth");
 const { Chat } = require("../models/chat");
+const User = require("../models/user");
 
 router.get("/:targetUserId", userAuth, async (req, res) => {
   try {
@@ -11,10 +12,9 @@ router.get("/:targetUserId", userAuth, async (req, res) => {
       participants: { $all: [userId, targetUserId] },
     }).populate({
       path: "messages.senderId",
-      select: "firstName lastName photoUrl",
+      select: "firstName lastName photoUrl ",
     });
-
-    console.log("data for existed page", chat);
+    const targetUser = await User.findOne({ _id: targetUserId });
     if (!chat) {
       chat = new Chat({
         participants: { $all: [userId, targetUserId] },
@@ -22,7 +22,7 @@ router.get("/:targetUserId", userAuth, async (req, res) => {
       });
       await chat.save();
     }
-    res.status(200).send({ data: chat });
+    res.status(200).send({ data: chat, targetUser: targetUser });
   } catch (error) {
     res.status(400).send({ message: error.msg });
   }
