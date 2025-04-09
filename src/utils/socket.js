@@ -49,6 +49,24 @@ const intialiseSocket = (server) => {
         }
       }
     );
+
+    socket.on("callUser", (data) => {
+      console.log(
+        "callUser is running socket data",
+        data.userToCall,
+        data.from
+      );
+      io.to(data.userToCall).emit("incomingCall", {
+        signal: data.signalData,
+        from: data.from,
+      });
+      console.log("call socket is running");
+    });
+
+    socket.on("answerCall", (data) => {
+      console.log("call is answering");
+      io.to(data.to).emit("callAccepted", data.signal);
+    });
   });
 };
 
